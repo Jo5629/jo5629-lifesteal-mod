@@ -1,11 +1,10 @@
-local max_hearts = 20 --> Will make into a setting in the future.
-
 --> Heart Item.
 minetest.register_craftitem("lifesteal_mod:heart", {
 	description = "Heart",
 	inventory_image = "heart.png",
+	stack_max = 65535,
 	on_use = function(itemstack, user, pointed_thing)
-		if user:get_properties().hp_max / 2 >= max_hearts then
+		if user:get_properties().hp_max / 2 >= lifesteal_mod.max_hearts then
 			minetest.chat_send_player(user:get_player_name(), minetest.colorize("#FF0000", "You have the max amount of hearts."))
 			return
 		end

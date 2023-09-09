@@ -1,0 +1,1 @@
+lifesteal_mod.max_hearts (Max Hearts) int 20

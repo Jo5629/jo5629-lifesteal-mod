@@ -1,7 +1,6 @@
 minetest.register_privilege("withdraw", {
 	description = "Allows to withdraw hearts from health bar.",
 	give_to_singleplayer = true,
-
 })
 
 minetest.register_chatcommand("withdraw", {
@@ -29,17 +28,17 @@ minetest.register_chatcommand("withdraw", {
 		else
 			local inv = player:get_inventory()
 			if inv:room_for_item("main", {name = "lifesteal_mod:heart"}) then
-				local hclock = 0 
+				local count = 0
 				repeat
 					inv:add_item("main", "lifesteal_mod:heart")
-					hclock = hclock + 1
-				until hclock == number
+					count = count + 1
+				until count == number
 			else
-				local hclock = 0
+				local count = 0
 				repeat
 					minetest.add_item(player:get_pos(), "lifesteal_mod:heart")
-					hclock = hclock + 1
-				until hclock == number
+					count = count + 1
+				until count == number
 			end
 			local health = player:get_meta():get_int("health")
 			health = health - (number * 2)
