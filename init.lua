@@ -19,18 +19,18 @@ minetest.register_on_prejoinplayer(function(name, ip)
 	end
 end)
 
+minetest.register_on_newplayer(function(player) --> When new player joins.
+	lifesteal_mod.handle_newplayer(player:get_player_name())
+end)
+
 minetest.register_on_joinplayer(function(player)
 	local meta = player:get_meta()
 	local health = meta:get_int("health")
 	local name = player:get_player_name()
 
-	if not lifesteal_mod.is_player_dead(name) then
-		player:set_properties({hp_max = 20})
-		if health == 0 or health == nil then
-			meta:set_int("health", 20)
-			player:set_hp(20)
-			lifesteal_mod.change_hp_max(player, player:get_hp(), health, true)
-		end
+	if not meta:contains("lifesteal_mod.newplayer") then
+		lifesteal_mod.handle_newplayer(name)
+		return
 	end
 
 	if lifesteal_mod.is_player_dead(name) then
@@ -39,41 +39,28 @@ minetest.register_on_joinplayer(function(player)
 		return
 	end
 
-	player:set_hp(player:get_hp())
-	minetest.after(0.01, function() lifesteal_mod.change_hp_max(player, player:get_hp(), health, true) end)
-end)
+	minetest.after(0.2, function()
+		lifesteal_mod.change_hp_max(player, player:get_hp(), health, true)
+	end)
 
-minetest.register_on_newplayer(function(player) --> When new player joins.
-	local meta = player:get_meta()
-
-	local health = meta:get_int("health")
-	if not health == nil then
-		meta:set_int("health", 20) --> Set the new player's max to a 20hp (10 hearts).
-	end
-
-	lifesteal_mod.change_hp_max(player, health, player:get_properties().hp_max, true)
+	minetest.log("action", "[Lifesteal Mod] A player has joined on.")
 end)
 
 minetest.register_on_dieplayer(function(player)
 	local name = player:get_player_name()
-
 	local meta = player:get_meta()
 	local health = meta:get_int("health")
-	local health = health - 2
+	health = health - 2
 
-	if not lifesteal_mod.is_player_dead(name) then
-		if health == 0 or health == nil then
-			meta:set_int("health", 20)
-		end
-	end
-
-	meta:set_int("health", health)
-	if meta:get_int("health") == 0 then
+	if health <= 0 then
+		lifesteal_mod.add_player(name)
 		minetest.kick_player(name, "You died on a lifesteal server.")
 
-		lifesteal_mod.add_player(name)
 		meta:set_int("health", 6)
+		return
 	end
+
+	minetest.log("action", "[Lifesteal Mod] A player has died.")
 end)
 
 minetest.register_on_respawnplayer(function(player)
@@ -81,26 +68,24 @@ minetest.register_on_respawnplayer(function(player)
 	local health = meta:get_int("health")
 	local name = player:get_player_name()
 
-	if not lifesteal_mod.is_player_dead(name) then
-		if health == 0 or health == nil then
-			meta:set_int("health", 20)
-		end
+	if meta:contains("lifesteal_mod.newplayer") then
+		minetest.after(0.2, function() lifesteal_mod.change_hp_max(player, health, health, true) end)
+		return
 	end
 
 	if lifesteal_mod.is_player_dead(name) then
 		minetest.kick_player(name, "You died on a lifesteal server.")
 		return
-	else
-		player:set_hp(player:get_hp() - 2)
 	end
 
-	player:set_hp(health)
-	lifesteal_mod.change_hp_max(player, player:get_hp(), health, true)
+	minetest.log("action", "[Lifesteal Mod] A player has respawned.")
 end)
 
 minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+	local hitter_name = hitter:get_player_name()
+	local player_name = player:get_player_name()
 	if player:get_hp() > 0 and player:get_hp() - damage <= 0 and 
-	minetest.is_player(hitter) and hitter:get_player_name() ~= player:get_player_name() then
+	minetest.is_player(hitter) and hitter_name ~= player_name then
 		local heart_num = hitter:get_properties().hp_max / 2
 		if not (heart_num >= lifesteal_mod.max_hearts) then
 			local health = hitter:get_meta():get_int("health") + 2
@@ -115,18 +100,16 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 				minetest.add_item(hitter:get_pos(), {name = "lifesteal_mod:heart"})
 			end
 		end
+		minetest.log("action", string.format("[Lifesteal Mod] %s killed and took a heart from %s.", hitter_name, player_name))
 	end
 end)
 
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	local meta = player:get_meta()
-	local health = meta:get_int("health")
 
-	if not lifesteal_mod.is_player_dead(name) then
-		if health == 0 or health == nil then
-			meta:set_int("health", 20)
-		end
+	if not meta:contains("lifesteal_mod.newplayer") then
+		minetest.after(0.1, function() lifesteal_mod.handle_newplayer(name) end)
 	end
 end)
 
@@ -186,3 +169,5 @@ if not minetest.get_modpath("hudbars") then
 		end
 	end)
 end
+
+minetest.log("action", "[Lifesteal Mod] Mod is loaded.")

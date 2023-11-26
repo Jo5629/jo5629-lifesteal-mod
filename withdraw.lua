@@ -50,7 +50,7 @@ minetest.register_chatcommand("withdraw", {
 			minetest.chat_send_player(player:get_player_name(),
 			minetest.get_color_escape_sequence("#05f53d")..
 			string.format("Successful. Withdrew %d hearts.", number))
-			minetest.log("action", string.format("%s withdrew %d hearts.", player:get_player_name(), number))
+			minetest.log("action", string.format("[Lifesteal Mod] %s withdrew %d hearts.", player:get_player_name(), number))
 		end
 	end,
 })

@@ -39,3 +39,27 @@ function lifesteal_mod.is_player_dead(p_name)
     end
     return false
 end
+
+function lifesteal_mod.handle_newplayer(p_name) --> When new player joins.
+    minetest.after(0.1, function()
+        local player = minetest.get_player_by_name(p_name)
+        
+        if not player then return end
+
+        local meta = player:get_meta()
+
+	    local health = meta:get_int("health")
+	    if (not health == nil) or health <= 0 or not meta:contains("lifesteal_mod.newplayer") then
+		    meta:set_int("health", 20) --> Set the new player's max to a 20hp (10 hearts).
+	    end
+
+        meta:set_string("lifesteal_mod.newplayer", "true")
+	    lifesteal_mod.change_hp_max(player, health, player:get_properties().hp_max, true)
+    end)
+end
+
+minetest.register_globalstep(function(dtime)
+    for _, player in pairs(minetest.get_connected_players()) do
+        lifesteal_mod.handle_newplayer(player:get_player_name())
+    end
+end)
