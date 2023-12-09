@@ -49,8 +49,7 @@ end)
 minetest.register_on_dieplayer(function(player)
 	local name = player:get_player_name()
 	local meta = player:get_meta()
-	local health = meta:get_int("health")
-	health = health - 2
+	local health = meta:get_int("health") - 2
 
 	if health <= 0 then
 		lifesteal_mod.add_player(name)
@@ -65,7 +64,7 @@ end)
 
 minetest.register_on_respawnplayer(function(player)
 	local meta = player:get_meta()
-	local health = meta:get_int("health")
+	local health = meta:get_int("health") - 2
 	local name = player:get_player_name()
 
 	if meta:contains("lifesteal_mod.newplayer") then

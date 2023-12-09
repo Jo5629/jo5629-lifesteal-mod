@@ -57,9 +57,3 @@ function lifesteal_mod.handle_newplayer(p_name) --> When new player joins.
 	    lifesteal_mod.change_hp_max(player, health, player:get_properties().hp_max, true)
     end)
 end
-
-minetest.register_globalstep(function(dtime)
-    for _, player in pairs(minetest.get_connected_players()) do
-        lifesteal_mod.handle_newplayer(player:get_player_name())
-    end
-end)
