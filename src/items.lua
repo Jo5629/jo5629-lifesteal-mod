@@ -1,8 +1,7 @@
 core.register_craftitem("lifesteal_mod:heart", {
 	description = "Heart",
 	inventory_image = "heart.png",
-	--stack_max = 65535,
-    wield_scale = {x = 0.5, y = 0.5, z = 0.5},
+    stack_max = 1,
 	on_use = function(itemstack, user, pointed_thing)
         local newHPMax = user:get_properties().hp_max + 2
 		if newHPMax > lifesteal_mod.HP_MAX then

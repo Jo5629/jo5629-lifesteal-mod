@@ -36,6 +36,8 @@ end
 
 local worldMT = Settings(core.get_worldpath() .. "/world.mt")
 if worldMT:get("gameid") == "mineclone2" then
+    core.unregister_item(FRAGMENT)
+
     local NAUTILUS = "mcl_mobitems:nautilus_shell"
     local NETHERITE = "mcl_nether:netherite_ingot"
     local STAR = "mcl_mobitems:nether_star"
