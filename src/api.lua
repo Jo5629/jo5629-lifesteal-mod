@@ -4,9 +4,11 @@ local hpList = {}
 
 if storage:get_string("lifesteal_mod:banList") ~= "" then
     banList = core.parse_json(storage:get_string("lifesteal_mod:banList"))
+    if type(banList) ~= "table" then banList = {} end
 end
 if storage:get_string("lifesteal_mod:hpList") ~= "" then
     hpList = core.parse_json(storage:get_string("lifesteal_mod:hpList"))
+    if type(hpList) ~= "table" then hpList = {} end
 end
 
 function lifesteal_mod.update(player, hpMax)
