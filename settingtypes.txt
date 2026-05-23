@@ -1,1 +1,2 @@
-lifesteal_mod.max_hearts (Max Hearts) int 20
+# The max hearts a single player is able to have.
+lifesteal_mod.max_hearts (Max Hearts) int 20 1 100
