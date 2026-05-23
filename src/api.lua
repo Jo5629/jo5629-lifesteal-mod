@@ -2,14 +2,17 @@ local storage = core.get_mod_storage()
 local banList = {}
 local hpList = {}
 
-if storage:get_string("lifesteal_mod:banList") ~= "" then
+if storage:contains("lifesteal_mod.dead_players") then --> Backwards compatibility
+    banList = core.deserialize(storage:get_string("lifesteal_mod.dead_players"))
+    storage:set_string("lifesteal_mod.dead_players", "")
+elseif storage:contains("lifesteal_mod:banList") then
     banList = core.parse_json(storage:get_string("lifesteal_mod:banList"))
-    if type(banList) ~= "table" then banList = {} end
 end
-if storage:get_string("lifesteal_mod:hpList") ~= "" then
+if storage:contains("lifesteal_mod:hpList") then
     hpList = core.parse_json(storage:get_string("lifesteal_mod:hpList"))
-    if type(hpList) ~= "table" then hpList = {} end
 end
+if type(banList) ~= "table" then banList = {} end
+if type(hpList) ~= "table" then hpList = {} end
 
 function lifesteal_mod.update(player, hpMax)
     local name = player:get_player_name()

@@ -5,7 +5,14 @@ core.register_on_prejoinplayer(function(name)
 end)
 
 core.register_on_joinplayer(function(player, last_login)
-    lifesteal_mod.update(player)
+    --> Backwards compatibility.
+    local meta = player:get_meta()
+    if meta:contains("health") then
+        lifesteal_mod.update(player, meta:get_int("health"))
+        meta:set_string("health", "")
+    else
+        lifesteal_mod.update(player)
+    end
     lifesteal_mod.tryToKick(player)
 end)
 
