@@ -9,7 +9,7 @@ core.register_craftitem("lifesteal_mod:heart", {
 			return
 		end
 
-        lifesteal_mod.update(user, nil, newHPMax)
+        lifesteal_mod.update(user, newHPMax)
         itemstack:take_item()
 		return itemstack
 	end
@@ -21,44 +21,44 @@ core.register_craftitem("lifesteal_mod:fragment", {
 	inventory_image = "fragment.png",
 })
 
-core.register_craftitem("lifesteal_mod:revive_lantern", {
-    stack_max = 1,
+core.register_tool("lifesteal_mod:revive_lantern", {
     description = "Revive Lantern.",
     inventory_image = "revive.png",
     on_use = function(itemstack, user, pointed_thing)
-        core.show_formspec(user:get_player_name(), "lifesteal_mod:revive_lantern",
-        "formspec_version[4]"..
-        "size[6,3.476]"..
-        "field[0.375,1.25;5.25,0.8;name;Dead player's name here.;]"..
-        "button[1.5,2.3;3,0.8;revive;Revive]")
+        lifesteal_mod.lantern:show(user)
     end,
 })
 
-local function closeFormspec(player, formname, reason, color)
-	local name = player:get_player_name()
-	core.chat_send_player(player:get_player_name(), core.colorize(color, reason))
-	core.close_formspec(name, formname)
-end
-
-core.register_on_player_receive_fields(function(player, formname, fields)
-    if formname ~= "lifesteal_mod:revive_lantern" then
+local function revivePlayer(player, ctx)
+    local inv = player:get_inventory()
+    local reviveName = ctx.form.playerName
+    if not inv:contains_item("main", {name = "lifesteal_mod:revive_lantern"})
+    or not reviveName or not lifesteal_mod.listContains(reviveName) then
+        lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
         return
     end
-    if fields.revive or fields.key_enter_field == "name" then
-        local name = tostring(fields.name)
-        if not core.player_exists(name) then
-			closeFormspec(player, formname, "Player is not real.", "#FF0000")
-            return
-        end
+    lifesteal_mod.lantern:close(player)
+    lifesteal_mod.revive(reviveName)
+    lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. reviveName .. ".", "#05F53D")
+    inv:remove_item("main", "lifesteal_mod:revive_lantern")
+end
 
-        if not lifesteal_mod.listContains(name) then
-			closeFormspec(player, formname, "Player is not dead.", "#FF0000")
-            return
-        end
-
-        lifesteal_mod.revive(name)
-		closeFormspec(player, formname, "Successfully revived player.", "#05F53D")
-        local inv = player:get_inventory()
-        inv:remove_item("main", "lifesteal_mod:revive_lantern")
-    end
+local gui = flow.widgets
+lifesteal_mod.lantern = flow.make_gui(function(player, ctx)
+    return gui.Vbox{
+        gui.Field{
+            name = "playerName",
+            label = "Revive:",
+        },
+        gui.ItemImageButton{
+            w = 2, h = 2,
+            item_name = "lifesteal_mod:revive_lantern",
+            name = "revivePlayer",
+            on_event = revivePlayer,
+        },
+        gui.Tooltip{
+            tooltip = "",
+            gui_element_name = "revivePlayer",
+        },
+    }
 end)

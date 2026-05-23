@@ -9,9 +9,8 @@ if storage:get_string("lifesteal_mod:hpList") ~= "" then
     hpList = core.parse_json(storage:get_string("lifesteal_mod:hpList"))
 end
 
-function lifesteal_mod.update(player, hp, hpMax, changeNow)
+function lifesteal_mod.update(player, hpMax)
     local name = player:get_player_name()
-    changeNow = changeNow or false
     if not hpMax then
         hpMax = lifesteal_mod.HP_MAX_DEFAULT
         if lifesteal_mod.getHearts(name) then
@@ -19,16 +18,14 @@ function lifesteal_mod.update(player, hp, hpMax, changeNow)
         end
     end
 
+    lifesteal_mod.setHearts(name, hpMax)
     player:set_properties({hp_max = hpMax})
-    if changeNow then player:set_hp(math.min(hp, hpMax)) end
 
     if lifesteal_mod.vl_hudbars then
         vl_hudbars.update_health(player)
     elseif lifesteal_mod.hudbars then
         hb.change_hudbar(player, "health", player:get_hp(), hpMax)
     end
-
-    lifesteal_mod.setHearts(name, hpMax)
 end
 
 function lifesteal_mod.getHearts(pName)
@@ -79,4 +76,9 @@ function lifesteal_mod.revive(pName)
     lifesteal_mod.setHearts(pName, lifesteal_mod.HP_REVIVE)
     lifesteal_mod.unbanPlayer(pName)
     return true
+end
+
+function lifesteal_mod.chatSendPlayer(pName, text, color)
+    color = color or "#FFFFFF"
+    core.chat_send_player(pName, core.colorize(color, text))
 end

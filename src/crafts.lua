@@ -34,7 +34,8 @@ if core.get_modpath("default") then
     })
 end
 
-if core.get_modpath("mcl_core") then
+local worldMT = Settings(core.get_worldpath() .. "/world.mt")
+if worldMT:get("gameid") == "mineclone2" then
     local NAUTILUS = "mcl_mobitems:nautilus_shell"
     local NETHERITE = "mcl_nether:netherite_ingot"
     local STAR = "mcl_mobitems:nether_star"

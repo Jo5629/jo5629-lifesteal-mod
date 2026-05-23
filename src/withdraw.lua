@@ -1,4 +1,4 @@
-local HEART_ITEMNAME = "lifesteal_mod:heart"
+local HEART = "lifesteal_mod:heart"
 local chatcmdbuilder = dofile(core.get_modpath(core.get_current_modname()) .. "/src/chatcmdbuilder.lua")
 
 core.register_privilege("withdraw", {
@@ -15,14 +15,14 @@ local function withdraw(player, hearts)
 
     local inv = player:get_inventory()
     for _ = 1, hearts do
-        if inv:room_for_item("main", {name = HEART_ITEMNAME}) then
-            inv:add_item("main", HEART_ITEMNAME)
+        if inv:room_for_item("main", {name = HEART}) then
+            inv:add_item("main", HEART)
         else
-            core.add_item(player:get_pos(), HEART_ITEMNAME)
+            core.add_item(player:get_pos(), HEART)
         end
     end
 
-    lifesteal_mod.update(player, nil, newHP)
+    lifesteal_mod.update(player, newHP)
 end
 
 local cmd = chatcmdbuilder.register("withdraw", {
@@ -34,5 +34,7 @@ cmd:sub("", function(name)
 end)
 
 cmd:sub(":int:int", function(name, int)
-    withdraw(core.get_player_by_name(name), int)
+    if int > 0 then
+        withdraw(core.get_player_by_name(name), int)
+    end
 end)
