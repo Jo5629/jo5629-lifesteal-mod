@@ -29,6 +29,7 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
     if player == hitter or not hitter:is_player() then return end
 	if player:get_hp() > 0 and player:get_hp() - damage <= 0 then
         local newHP = lifesteal_mod.getHearts(hitter:get_player_name()) + 2
+        local newHealthBoostHP = hitter:get_properties().hp_max + 2
 		if newHP > lifesteal_mod.HP_MAX then
             local inv = hitter:get_inventory()
             if inv:room_for_item("main", {name = HEART_ITEMNAME}) then
@@ -39,6 +40,10 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
             return
         end
         lifesteal_mod.update(hitter, newHP)
+        if lifesteal_mod.hasHealthBoost(hitter) then
+            hitter:set_properties({hp_max = newHealthBoostHP})
+            vl_hudbars.update_health(hitter)
+        end
     end
 end)
 
