@@ -34,8 +34,7 @@ if core.get_modpath("default") then
     })
 end
 
-local worldMT = Settings(core.get_worldpath() .. "/world.mt")
-if worldMT:get("gameid") == "mineclone2" then
+if lifesteal_mod.CURRENT_GAME == "mineclone2" then
     core.unregister_item(FRAGMENT)
 
     local NAUTILUS = "mcl_mobitems:nautilus_shell"

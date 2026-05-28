@@ -26,9 +26,9 @@ function lifesteal_mod.update(player, hpMax)
     lifesteal_mod.setHearts(name, hpMax)
     player:set_properties({hp_max = hpMax})
 
-    if lifesteal_mod.vl_hudbars then
+    if lifesteal_mod.VL_HUDBARS then
         vl_hudbars.update_health(player)
-    elseif lifesteal_mod.hudbars then
+    elseif lifesteal_mod.HUDBARS then
         hb.change_hudbar(player, "health", player:get_hp(), hpMax)
     end
 end
@@ -53,12 +53,7 @@ function lifesteal_mod.unbanPlayer(pName)
 end
 
 function lifesteal_mod.listContains(pName)
-    for name, _ in pairs(banList) do
-        if name == pName then
-            return true
-        end
-    end
-    return false
+    return banList[pName] or false
 end
 
 function lifesteal_mod.tryToKick(player)
@@ -86,4 +81,11 @@ end
 function lifesteal_mod.chatSendPlayer(pName, text, color)
     color = color or "#FFFFFF"
     core.chat_send_player(pName, core.colorize(color, text))
+end
+
+function lifesteal_mod.hasHealthBoost(player)
+    if lifesteal_mod.CURRENT_GAME == "mineclone2" then
+        return mcl_potions.has_effect(player, "health_boost")
+    end
+    return false
 end

@@ -1,14 +1,19 @@
 core.register_craftitem("lifesteal_mod:heart", {
 	description = "Heart",
 	inventory_image = "heart.png",
-    stack_max = 1,
 	on_use = function(itemstack, user, pointed_thing)
-        local newHPMax = user:get_properties().hp_max + 2
-		if newHPMax > lifesteal_mod.HP_MAX then
+        if lifesteal_mod.hasHealthBoost(user) then
+            lifesteal_mod.chatSendPlayer(user:get_player_name(), "Wait before the Health Boost effect clears to use the heart.", "#FF0000")
+            return
+        end
+
+        local newHP = lifesteal_mod.getHearts(user:get_player_name()) + 2
+		if newHP > lifesteal_mod.HP_MAX then
+            lifesteal_mod.chatSendPlayer(user:get_player_name(), "You have already reached the maximum number of hearts.", "#FF0000")
 			return
 		end
 
-        lifesteal_mod.update(user, newHPMax)
+        lifesteal_mod.update(user, newHP)
         itemstack:take_item()
 		return itemstack
 	end
@@ -37,9 +42,10 @@ local function revivePlayer(player, ctx)
         return
     end
     lifesteal_mod.lantern:close(player)
-    lifesteal_mod.revive(reviveName)
-    lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. reviveName .. ".", "#05F53D")
-    inv:remove_item("main", "lifesteal_mod:revive_lantern")
+    if lifesteal_mod.revive(reviveName) then
+        lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. reviveName .. ".", "#05F53D")
+        inv:remove_item("main", "lifesteal_mod:revive_lantern")
+    end
 end
 
 local gui = flow.widgets
