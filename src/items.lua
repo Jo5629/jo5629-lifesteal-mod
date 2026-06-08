@@ -22,12 +22,12 @@ core.register_alias("heart", "lifesteal_mod:heart")
 
 core.register_craftitem("lifesteal_mod:fragment", {
 	description = "Heart Fragment",
-	inventory_image = "fragment.png",
+	inventory_image = "lifesteal_mod_fragment.png",
 })
 
 core.register_tool("lifesteal_mod:revive_lantern", {
     description = "Revive Lantern.",
-    inventory_image = "revive.png",
+    inventory_image = "lifesteal_mod_revive_lantern.png",
     on_use = function(itemstack, user, pointed_thing)
         lifesteal_mod.lantern:show(user)
     end,

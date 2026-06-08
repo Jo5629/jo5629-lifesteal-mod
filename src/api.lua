@@ -2,7 +2,8 @@ local storage = core.get_mod_storage()
 local banList = {}
 local hpList = {}
 
-if storage:contains("lifesteal_mod.dead_players") then --> Backwards compatibility
+--> Backwards compatibility
+if storage:contains("lifesteal_mod.dead_players") then
     banList = core.deserialize(storage:get_string("lifesteal_mod.dead_players"))
     storage:set_string("lifesteal_mod.dead_players", "")
 elseif storage:contains("lifesteal_mod:banList") then
@@ -11,8 +12,6 @@ end
 if storage:contains("lifesteal_mod:hpList") then
     hpList = core.parse_json(storage:get_string("lifesteal_mod:hpList"))
 end
-if type(banList) ~= "table" then banList = {} end
-if type(hpList) ~= "table" then hpList = {} end
 
 function lifesteal_mod.update(player, hpMax)
     local name = player:get_player_name()
@@ -42,6 +41,18 @@ function lifesteal_mod.setHearts(pName, num)
     storage:set_string("lifesteal_mod:hpList", core.write_json(hpList))
 end
 
+function lifesteal_mod.cleanHPList()
+    local cleared = 0
+    for pName, num in pairs(hpList) do
+        if num == 0 then
+            hpList[pName] = nil
+            cleared = cleared + 1
+        end
+    end
+    storage:set_string("lifesteal_mod:hpList", core.write_json(hpList))
+    return cleared
+end
+
 function lifesteal_mod.banPlayer(pName)
     banList[pName] = true
     storage:set_string("lifesteal_mod:banList", core.write_json(banList))
@@ -53,7 +64,7 @@ function lifesteal_mod.unbanPlayer(pName)
 end
 
 function lifesteal_mod.listContains(pName)
-    return banList[pName] or false
+    return banList[pName] ~= nil
 end
 
 function lifesteal_mod.tryToKick(player)
@@ -66,7 +77,7 @@ end
 
 function lifesteal_mod.kickAndBan(pName)
     lifesteal_mod.banPlayer(pName)
-    core.kick_player(pName, lifesteal_mod.DEATH_MESSAGE_DEFAULT)
+    core.disconnect_player(pName, lifesteal_mod.DEATH_MESSAGE_DEFAULT)
 end
 
 function lifesteal_mod.revive(pName)

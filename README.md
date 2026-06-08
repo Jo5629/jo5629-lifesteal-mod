@@ -10,6 +10,7 @@
   - If hpMax is specified, `player`'s `hp_max` will be set to `hpMax`.
 - `lifesteal_mod.getHearts(pName)`
 - `lifesteal_mod.setHearts(pName, num)`
+- `lifesteal_mod.cleanHPList()`
 - `lifesteal_mod.banPlayer(pName)`
 - `lifesteal_mod.unbanPlayer(pName)`
 - `lifesteal_mod.listContains(pName)`

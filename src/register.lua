@@ -18,10 +18,10 @@ end)
 
 core.register_on_dieplayer(function(player)
     local newHP = lifesteal_mod.getHearts(player:get_player_name()) - 2
+    lifesteal_mod.update(player, newHP)
     if newHP <= 0 then
         lifesteal_mod.kickAndBan(player:get_player_name())
     end
-    lifesteal_mod.update(player, newHP)
 end)
 
 local HEART_ITEMNAME = "lifesteal_mod:heart"
