@@ -1,12 +1,13 @@
 local HEART = "lifesteal_mod:heart"
 local FRAGMENT = "lifesteal_mod:fragment"
+local CRAFT = core.register_craft
 
 if core.get_modpath("default") then
     local MESE = "default:mese"
     local OBSIDIAN = "default:obsidian"
     local DIAMOND = "default:diamondblock"
 
-    core.register_craft({
+    CRAFT({
         output = "lifesteal_mod:revive_lantern",
         recipe = {
             {HEART, HEART, HEART},
@@ -15,7 +16,7 @@ if core.get_modpath("default") then
         },
     })
 
-    core.register_craft({
+    CRAFT({
         output = FRAGMENT,
         recipe = {
             {OBSIDIAN, MESE, OBSIDIAN},
@@ -24,7 +25,7 @@ if core.get_modpath("default") then
         },
     })
 
-    core.register_craft({
+    CRAFT({
         output = HEART,
         recipe = {
             {FRAGMENT, MESE, FRAGMENT},
@@ -41,8 +42,9 @@ if lifesteal_mod.CURRENT_GAME == "mineclone2" then
     local NETHERITE = "mcl_nether:netherite_ingot"
     local STAR = "mcl_mobitems:nether_star"
     local TOTEM = "mcl_totems:totem"
+    local HEALING = "mcl_potions:healing"
 
-    core.register_craft({
+    CRAFT({
         output = HEART,
         recipe = {
             {NAUTILUS, NETHERITE, NAUTILUS},
@@ -51,12 +53,12 @@ if lifesteal_mod.CURRENT_GAME == "mineclone2" then
         },
     })
 
-    core.register_craft({
+    CRAFT({
         output = "lifesteal_mod:revive_lantern",
         recipe = {
-            {HEART, "mcl_armor:elytra", HEART},
-            {TOTEM, "mcl_mobitems:heart_of_the_sea", "mcl_potions:speckled_melon"},
-            {HEART, "mcl_heads:skeleton", HEART},
-        },
+            {HEART, TOTEM, HEART},
+            {HEALING, "mcl_lanterns:soul_lantern_floor", HEALING},
+            {HEART, TOTEM, HEART}
+        }
     })
 end
