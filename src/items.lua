@@ -37,7 +37,7 @@ local function revivePlayer(player, ctx)
     local inv = player:get_inventory()
     local reviveName = ctx.form.playerName
     if not inv:contains_item("main", {name = "lifesteal_mod:revive_lantern"})
-    or not reviveName or not lifesteal_mod.listContains(reviveName) then
+    or not reviveName or not lifesteal_mod.isBanned(reviveName) then
         lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
         return
     end

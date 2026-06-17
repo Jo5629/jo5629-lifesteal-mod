@@ -8,26 +8,36 @@
   - `player`: PlayerRef
   - `hpMax`: int
   - If hpMax is specified, `player`'s `hp_max` will be set to `hpMax`.
+  - Updates `player`'s `hp_max` and updated the hud accordingly.
 - `lifesteal_mod.getHearts(pName)`
 - `lifesteal_mod.setHearts(pName, num)`
-- `lifesteal_mod.cleanHPList()`
+- `lifesteal_mod.cleanHPList() -> int`
+  - Returns how many entries were cleared.
+  - Clears up entries that have a value of 0.
+    - The mod assumes that players with 0 HP are dead and banned.
+  - Used for freeing up storage space.
 - `lifesteal_mod.banPlayer(pName)`
 - `lifesteal_mod.unbanPlayer(pName)`
-- `lifesteal_mod.listContains(pName)`
+- `lifesteal_mod.isBanned(pName) -> boolean`
   - Checks to see if `pName` is in the banlist.
+- `lifesteal_mod.listContains(pName) -> boolean`
+  - Alias of `lifesteal_mod.isBanned`.
 - `lifesteal_mod.tryToKick(player) -> boolean`
   - Returns `true` on success, `false` for failure.
   - `player`: PlayerRef
 - `lifesteal_mod.kickAndBan(pName)`
   - `pName`: string
-- `lifesteal_mod.revive(pName)`
+- `lifesteal_mod.revive(pName) -> boolean`
+  - Returns `true` on success, `false` for failure.
   - `pName`: string
-- `lifesteal_mod.chatsendPlayer(pName, text, color)`
+  - Attempts to revive `pName`. The amount of hearts `pName` will then be given is dependent on `lifesteal_mod.HP_REVIVE`.
+- `lifesteal_mod.chatSendPlayer(pName, text, color)`
   - Tries to send `text` to `pName` with color `color`.
 - `lifesteal_mod.hasHealthBoost(player) -> boolean`
   - Returns `true` on success, `false` for failure.
+  - `player`: PlayerRef
   - Checks to see if `player` has the `health_boost` effect.
-  - Works in VoxeLibre only.
+  - The check only occurs when using VoxeLibre, all other games will always return `false`.
 
 ### Constants
 
@@ -42,6 +52,6 @@
 - `lifesteal_mod.CURRENT_GAME -> string`
   - The current game running.
 - `lifesteal_mod.HUDBARS -> boolean`
-  - Boolean for if `hudbars` is enabled.
+  - Checks if `hudbars` is enabled.
 - `lifesteal_mod.VL_HUDBARS -> boolean`
-  - Boolean for if `vl_hudbars` is enabled.
+  - Checks if `vl_hudbars` is enabled.

@@ -1,15 +1,15 @@
 local cmd = chatcmdbuilder.register("ls", {
-    params = "(<name> +<num>) | (<name> -<num>) | (revive <name>)",
+    params = "(<name> +<num>) | (<name> -<num>) | (revive <name>) | hplist_cleanup",
     privs = {server = true},
 })
 
 local colorize = core.colorize
 local function addHearts(target, num)
-    num = num * 2
-    if not core.player_exists(target) or not lifesteal_mod.getHearts(target) then
-        return false, colorize("#FF0000", "Player does not exist!")
+    if not core.player_exists(target) or not lifesteal_mod.getHearts(target)
+    or lifesteal_mod.isBanned(target) then
+        return false, colorize("#FF0000", "Player does not exist or is banned!")
     end
-    local newHP = lifesteal_mod.getHearts(target) + num
+    local newHP = lifesteal_mod.getHearts(target) + num * 2
     if newHP > lifesteal_mod.HP_MAX then
         newHP = lifesteal_mod.HP_MAX
     end
@@ -42,11 +42,16 @@ end)
 
 cmd:sub("revive :target:username", function(name, target)
     local player = core.get_player_by_name(name)
-    if not lifesteal_mod.listContains(target) then
+    if not lifesteal_mod.isBanned(target) then
         lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
         return
     end
     if lifesteal_mod.revive(target) then
         lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. target .. ".", "#05F53D")
     end
+end)
+
+cmd:sub("hplist_cleanup", function(name)
+    local cleared = lifesteal_mod.cleanHPList()
+    return true, colorize("#00FF00", ("Cleared %d entries."):format(cleared))
 end)

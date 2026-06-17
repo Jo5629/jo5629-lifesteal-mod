@@ -63,12 +63,13 @@ function lifesteal_mod.unbanPlayer(pName)
     storage:set_string("lifesteal_mod:banList", core.write_json(banList))
 end
 
-function lifesteal_mod.listContains(pName)
+function lifesteal_mod.isBanned(pName)
     return banList[pName] ~= nil
 end
+lifesteal_mod.listContains = lifesteal_mod.isBanned
 
 function lifesteal_mod.tryToKick(player)
-    if lifesteal_mod.listContains(player:get_player_name()) then
+    if lifesteal_mod.isBanned(player:get_player_name()) then
         lifesteal_mod.kickAndBan(player:get_player_name())
         return true
     end
@@ -81,7 +82,7 @@ function lifesteal_mod.kickAndBan(pName)
 end
 
 function lifesteal_mod.revive(pName)
-    if not lifesteal_mod.listContains(pName) then
+    if not lifesteal_mod.isBanned(pName) then
         return false
     end
     lifesteal_mod.setHearts(pName, lifesteal_mod.HP_REVIVE)

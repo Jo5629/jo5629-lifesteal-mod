@@ -1,5 +1,5 @@
 core.register_on_prejoinplayer(function(name)
-    if lifesteal_mod.listContains(name) then
+    if lifesteal_mod.isBanned(name) then
         return lifesteal_mod.DEATH_MESSAGE_DEFAULT
     end
 end)
