@@ -1,4 +1,10 @@
 local cmd = chatcmdbuilder.register("ls", {
+    description = table.concat({
+        "<name> +<num>: Add <num> hearts to <name>.",
+        "<name> -<num>: Take <num> hearts away from <name>.",
+        "revive <name>: Try to revive <name>.",
+        "hplist_cleanup: Clear empty entries to free up storage space.",
+    }, "\n"),
     params = "(<name> +<num>) | (<name> -<num>) | (revive <name>) | hplist_cleanup",
     privs = {server = true},
 })
@@ -27,17 +33,15 @@ local function addHearts(target, num)
 end
 
 cmd:sub(":target:username +:num:int", function(name, target, num)
-    if num <= 0 then
-        return
+    if num > 0 then
+        return addHearts(target, num)
     end
-    return addHearts(target, num)
 end)
 
 cmd:sub(":target:username -:num:int", function(name, target, num)
-    if num <= 0 then
-        return
+    if num > 0 then
+        return addHearts(target, -1 * num)
     end
-    return addHearts(target, -1 * num)
 end)
 
 cmd:sub("revive :target:username", function(name, target)

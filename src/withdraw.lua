@@ -2,8 +2,13 @@ local HEART = "lifesteal_mod:heart"
 local colorize = core.colorize
 
 core.register_privilege("withdraw", {
-	description = "Allows to withdraw hearts from health bar.",
+	description = "Grants the usage of the /withdraw command.",
 	give_to_singleplayer = true,
+})
+
+local cmd = chatcmdbuilder.register("withdraw", {
+    params = "<num>",
+    privs = {withdraw = true},
 })
 
 local function withdraw(player, hearts)
@@ -28,11 +33,6 @@ local function withdraw(player, hearts)
 
     lifesteal_mod.update(player, newHP)
 end
-
-local cmd = chatcmdbuilder.register("withdraw", {
-    params = "<num>",
-    privs = {withdraw = true},
-})
 
 cmd:sub("", function(name)
     return withdraw(core.get_player_by_name(name), 1)
