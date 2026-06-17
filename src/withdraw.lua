@@ -1,5 +1,5 @@
 local HEART = "lifesteal_mod:heart"
-local chatcmdbuilder = dofile(core.get_modpath(core.get_current_modname()) .. "/src/chatcmdbuilder.lua")
+local colorize = core.colorize
 
 core.register_privilege("withdraw", {
 	description = "Allows to withdraw hearts from health bar.",
@@ -8,13 +8,13 @@ core.register_privilege("withdraw", {
 
 local function withdraw(player, hearts)
     if lifesteal_mod.hasHealthBoost(player) then
-        return false, core.colorize("#FF0000", "Wait before the Health Boost effect clears to withdraw a heart.")
+        return false, colorize("#FF0000", "Wait before the Health Boost effect clears to withdraw a heart.")
     end
 
     local totalHP = hearts * 2
     local newHP = lifesteal_mod.getHearts(player:get_player_name()) - totalHP
     if newHP <= 0 then
-        return false, core.colorize("#FF0000", "You are withdrawing too many hearts.")
+        return false, colorize("#FF0000", "You are withdrawing too many hearts.")
     end
 
     local inv = player:get_inventory()
@@ -30,6 +30,7 @@ local function withdraw(player, hearts)
 end
 
 local cmd = chatcmdbuilder.register("withdraw", {
+    params = "<num>",
     privs = {withdraw = true},
 })
 
