@@ -41,7 +41,6 @@ if lifesteal_mod.CURRENT_GAME == "mineclone2" then
     local NAUTILUS = "mcl_mobitems:nautilus_shell"
     local NETHERITE = "mcl_nether:netherite_ingot"
     local STAR = "mcl_mobitems:nether_star"
-    local TOTEM = "mcl_totems:totem"
     local HEALING = "mcl_potions:healing"
 
     CRAFT({
@@ -56,9 +55,9 @@ if lifesteal_mod.CURRENT_GAME == "mineclone2" then
     CRAFT({
         output = "lifesteal_mod:revive_lantern",
         recipe = {
-            {HEART, TOTEM, HEART},
+            {HEART, "mcl_totems:totem", HEART},
             {HEALING, "mcl_lanterns:soul_lantern_floor", HEALING},
-            {HEART, TOTEM, HEART}
+            {HEART, "mcl_end:crystal", HEART}
         }
     })
 end
