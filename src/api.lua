@@ -16,7 +16,7 @@ end
 function lifesteal_mod.update(player, hpMax)
     local name = player:get_player_name()
     if not hpMax then
-        hpMax = lifesteal_mod.HP_MAX_NEWPLAYER
+        hpMax = lifesteal_mod.HP_NEWPLAYER
         if lifesteal_mod.getHearts(name) then
             hpMax = lifesteal_mod.getHearts(name)
         end

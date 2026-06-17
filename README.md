@@ -41,7 +41,7 @@
 
 ### Constants
 
-- `lifesteal_mod.HP_MAX_NEWPLAYER -> int`
+- `lifesteal_mod.HP_NEWPLAYER -> int`
   - Amount of HP a new player will be given.
 - `lifesteal_mod.HP_REVIVE -> int`
   - Amount of HP a revived player will be given.

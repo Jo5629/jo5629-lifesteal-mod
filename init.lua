@@ -1,7 +1,7 @@
 local worldMT = Settings(core.get_worldpath() .. "/world.mt")
 
 lifesteal_mod = {
-    HP_MAX_NEWPLAYER = 20,
+    HP_NEWPLAYER = 20,
     HP_REVIVE = 6,
     HP_MAX = 40,
     DEATH_MESSAGE_DEFAULT = "You ran out of hearts.",
