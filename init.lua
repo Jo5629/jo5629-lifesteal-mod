@@ -25,6 +25,7 @@ dofile(MP .. "/crafts.lua")
 dofile(MP .. "/withdraw.lua")
 dofile(MP .. "/commands.lua")
 
-if not (lifesteal_mod.HUDBARS or lifesteal_mod.VL_HUDBARS) then
+if not (lifesteal_mod.HUDBARS or lifesteal_mod.VL_HUDBARS)
+and core.settings:get_bool("enable_damage", false) then
     dofile(MP .. "/hud.lua")
 end

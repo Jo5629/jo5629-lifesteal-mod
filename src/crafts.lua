@@ -1,20 +1,12 @@
 local HEART = "lifesteal_mod:heart"
 local FRAGMENT = "lifesteal_mod:fragment"
+local LANTERN = "lifesteal_mod:revive_lantern"
 local CRAFT = core.register_craft
 
 if core.get_modpath("default") then
     local MESE = "default:mese"
     local OBSIDIAN = "default:obsidian"
     local DIAMOND = "default:diamondblock"
-
-    CRAFT({
-        output = "lifesteal_mod:revive_lantern",
-        recipe = {
-            {HEART, HEART, HEART},
-            {HEART, "default:meselamp", HEART},
-            {OBSIDIAN, OBSIDIAN, OBSIDIAN},
-        },
-    })
 
     CRAFT({
         output = FRAGMENT,
@@ -29,9 +21,18 @@ if core.get_modpath("default") then
         output = HEART,
         recipe = {
             {FRAGMENT, MESE, FRAGMENT},
-            {FRAGMENT, DIAMOND, FRAGMENT},
+            {MESE, DIAMOND, MESE},
             {FRAGMENT, MESE, FRAGMENT},
         }
+    })
+
+    CRAFT({
+        output = LANTERN,
+        recipe = {
+            {HEART, OBSIDIAN, HEART},
+            {OBSIDIAN, "default:meselamp", OBSIDIAN},
+            {HEART, OBSIDIAN, HEART},
+        },
     })
 end
 
@@ -53,7 +54,7 @@ if lifesteal_mod.CURRENT_GAME == "mineclone2" then
     })
 
     CRAFT({
-        output = "lifesteal_mod:revive_lantern",
+        output = LANTERN,
         recipe = {
             {HEART, "mcl_totems:totem", HEART},
             {HEALING, "mcl_lanterns:soul_lantern_floor", HEALING},
