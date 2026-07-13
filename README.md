@@ -1,5 +1,22 @@
 # Lifesteal Mod
 
+## Why does VoxeLibre work with the mod, but not Mineclonia?
+
+- This is due to the `hudbars` mod in Mineclonia incorrectly rendering the player's healthbar, which is fixed in VoxeLibre.
+- Enabling the mod when using Mineclonia will return a warning by the mod.
+  - **Enable at your own risk.**
+
+## Features
+
+- When you die, you lose a heart.
+- When you kill a player, you gain the heart.
+  - If you have already reached the maximum amount of hearts, the heart will turn into an item and enter your inventory if your inventory has room, otherwise the heart will spawn on the ground.
+- When a player goes to zero hearts, the player is banned from the server.
+- You can withdraw hearts using the  `/withdraw [<hearts>]` command.
+  - The command requires the `withdraw` privilege.
+- You can bring a banned player back through using a revive lantern.
+- Hearts and revive lanterns are craftable.
+
 ## API
 
 ### Functions
@@ -55,3 +72,9 @@
   - Checks if `hudbars` is enabled.
 - `lifesteal_mod.VL_HUDBARS -> boolean`
   - Checks if `vl_hudbars` is enabled.
+
+## Miscellaneous
+
+- Most versions before 3.0.0 depend on `hudbars`.
+
+> Inspired by the Minecraft Lifesteal SMP.
