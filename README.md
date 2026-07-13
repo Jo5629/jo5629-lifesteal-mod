@@ -1,10 +1,17 @@
 # Lifesteal Mod
 
-## Why does VoxeLibre work with the mod, but not Mineclonia?
+| Game | Supported? |
+| --- | --- |
+| Minetest Game | ✔️ Fully Supported |
+| VoxeLibre | ➖ Supported only in versions `0.91.0+` |
+| Mineclonia | ❌ Not Supported |
+| Other Games | Unknown |
 
-- This is due to the `hudbars` mod in Mineclonia incorrectly rendering the player's healthbar, which is fixed in VoxeLibre.
-- Enabling the mod when using Mineclonia will return a warning by the mod.
-  - **Enable at your own risk.**
+## Why is Mineclonia not supported, but VoxeLibre is?
+
+- As of [Mineclonia 0.122.2](https://codeberg.org/mineclonia/mineclonia/releases/tag/0.122.2), the `hudbars` mod incorrectly renders the player's healthbar.
+  - This issue is fixed in [VoxeLibre 0.91.0](https://git.minetest.land/VoxeLibre/VoxeLibre/src/branch/master/releasenotes/0_91-the-sneaky-release.md#hudbars-update).
+  - If you want to use Mineclonia, **enable at your own risk. Undesirable functionality may occur.**
 
 ## Features
 
@@ -15,7 +22,8 @@
 - You can withdraw hearts using the  `/withdraw [<hearts>]` command.
   - The command requires the `withdraw` privilege.
 - You can bring a banned player back through using a revive lantern.
-- Hearts and revive lanterns are craftable.
+- Depending on the game, hearts and revive lanterns are craftable.
+- **Some functionality will be disabled if `enable_damage` is disabled or not found.**
 
 ## API
 
@@ -75,6 +83,6 @@
 
 ## Miscellaneous
 
-- Most versions before 3.0.0 depend on `hudbars`.
+- Most versions before `3.0.0` depend on `hudbars`.
 
 > Inspired by the Minecraft Lifesteal SMP.
