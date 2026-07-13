@@ -41,6 +41,7 @@ local function revivePlayer(player, ctx)
         lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
         return
     end
+
     lifesteal_mod.lantern:close(player)
     if lifesteal_mod.revive(reviveName) then
         lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. reviveName .. ".", "#05F53D")

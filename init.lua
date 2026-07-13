@@ -1,13 +1,24 @@
+local UNSUPPORTED_GAMES = {
+    ["mineclonia"] = true,
+}
+
+local function get(name, default)
+    return core.settings:get(name) or default
+end
+
 local worldMT = Settings(core.get_worldpath() .. "/world.mt")
+local getMP = core.get_modpath
+local MP = getMP(core.get_current_modname()) .. "/src"
+local isDamageEnabled = get("enable_damage", false)
 
 lifesteal_mod = {
-    HP_NEWPLAYER = 20,
-    HP_REVIVE = 6,
-    HP_MAX = core.settings:get("lifesteal_mod.max_hearts") * 2 or 40,
-    DEATH_MESSAGE_DEFAULT = "You ran out of hearts.",
+    HP_NEWPLAYER = get("lifesteal_mod.hearts_newplayer", 10) * 2,
+    HP_REVIVE = get("lifesteal_mod.hearts_revive", 3) * 2,
+    HP_MAX = get("lifesteal_mod.max_hearts", 20) * 2,
+    DEATH_MESSAGE_DEFAULT = get("lifesteal_mod.death_message", "You ran out of hearts."),
     CURRENT_GAME = worldMT:get("gameid"),
-    HUDBARS = core.get_modpath("hudbars") ~= nil,
-    VL_HUDBARS = core.get_modpath("vl_hudbars") ~= nil,
+    HUDBARS = getMP("hudbars") ~= nil,
+    VL_HUDBARS = getMP("vl_hudbars") ~= nil,
 }
 
 core.register_privilege("lifesteal_admin", {
@@ -21,10 +32,7 @@ core.register_privilege("withdraw", {
 	give_to_singleplayer = false,
 })
 
-local MP = core.get_modpath(core.get_current_modname()) .. "/src"
-local isDamageEnabled = core.settings:get_bool("enable_damage", false)
-
-if not core.get_modpath("lib_chatcmdbuilder") then
+if not getMP("lib_chatcmdbuilder") then
     chatcmdbuilder = dofile(MP .. "/chatcmdbuilder.lua")
 end
 
@@ -43,6 +51,7 @@ else
     core.log("warning", "[lifesteal_mod] Core functionality is disabled because `enable_damage` is disabled.")
 end
 
-if lifesteal_mod.CURRENT_GAME == "mineclonia" then
-    core.log("error", "[lifesteal_mod] Mineclonia may cause the mod and world to function improperly.")
+if UNSUPPORTED_GAMES[lifesteal_mod.CURRENT_GAME]
+and get("lifesteal_mod.show_unsupported_error", false) then
+    core.log("error", "[lifesteal_mod] Unsupported game detected. The mod and world may function improperly.")
 end

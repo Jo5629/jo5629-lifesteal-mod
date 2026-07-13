@@ -1,2 +1,17 @@
-# The max hearts a single player is able to have.
-lifesteal_mod.max_hearts (Max Hearts) int 20 1 100
+#   The max hearts a player is able to have.
+lifesteal_mod.max_hearts (Max hearts) int 20 1 100
+
+#   If enabled, the mod will show a error whenever using an unsupported game.
+lifesteal_mod.show_unsupported_error (Show unsupported game error) bool true
+
+#   Default message shown when a player loses all of their hearts.
+lifesteal_mod.death_message (Death message) string You ran out of hearts.
+
+#   Amount of hearts a new player will be given.
+lifesteal_mod.hearts_newplayer (Hearts for a new player) int 10 1 100
+
+#   Amount of hearts a player will be given after they are revived.
+#
+#   Recommended to be less than however many hearts are required
+#   in the lantern crafting recipe to avoid heart farming.
+lifesteal_mod.hearts_revive (Hearts on revive) int 3 1 100

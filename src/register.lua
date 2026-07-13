@@ -13,12 +13,14 @@ core.register_on_joinplayer(function(player, last_login)
     else
         lifesteal_mod.update(player)
     end
+
     lifesteal_mod.tryToKick(player)
 end)
 
 core.register_on_dieplayer(function(player)
     local newHP = lifesteal_mod.getHearts(player:get_player_name()) - 2
     lifesteal_mod.update(player, newHP)
+
     if newHP <= 0 then
         lifesteal_mod.kickAndBan(player:get_player_name())
     end

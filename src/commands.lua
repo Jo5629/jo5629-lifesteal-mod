@@ -1,9 +1,9 @@
 local cmd = chatcmdbuilder.register("ls", {
     description = table.concat({
-        "<name> +<num>: Add <num> hearts to <name>.",
-        "<name> -<num>: Take <num> hearts away from <name>.",
-        "revive <name>: Tries to revive <name>. Command requires the `ban` privilege.",
-        "hplist_cleanup: Clear empty entries to free up storage space.",
+        "<name> +<num>: Adds <num> hearts to <name>.",
+        "<name> -<num>: Takes <num> hearts away from <name>.",
+        "revive <name>: Attempts to revive <name>. Requires the `ban` privilege.",
+        "hplist_cleanup: Clears empty entries to free up storage space.",
     }, "\n"),
     params = "(<name> +<num>) | (<name> -<num>) | (revive <name>) | hplist_cleanup",
     privs = {server = true, lifesteal_admin = true},
@@ -11,10 +11,12 @@ local cmd = chatcmdbuilder.register("ls", {
 
 local colorize = core.colorize
 local function addHearts(target, num)
-    if not core.player_exists(target) or not lifesteal_mod.getHearts(target)
+    if not core.player_exists(target)
+    or not lifesteal_mod.getHearts(target)
     or lifesteal_mod.isBanned(target) then
         return false, colorize("#FF0000", "Player does not exist or is banned!")
     end
+
     local newHP = lifesteal_mod.getHearts(target) + num * 2
     if newHP > lifesteal_mod.HP_MAX then
         newHP = lifesteal_mod.HP_MAX
@@ -29,6 +31,7 @@ local function addHearts(target, num)
     else
         lifesteal_mod.setHearts(target, newHP)
     end
+
     return true, colorize("#00FF00", ("Set %s's hearts to %d."):format(target, newHP / 2))
 end
 
@@ -52,6 +55,7 @@ cmd:sub("revive :target:username", {
             lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
             return
         end
+
         if lifesteal_mod.revive(target) then
             lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. target .. ".", "#05F53D")
         end
