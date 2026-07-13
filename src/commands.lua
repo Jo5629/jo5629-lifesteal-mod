@@ -2,11 +2,11 @@ local cmd = chatcmdbuilder.register("ls", {
     description = table.concat({
         "<name> +<num>: Add <num> hearts to <name>.",
         "<name> -<num>: Take <num> hearts away from <name>.",
-        "revive <name>: Try to revive <name>.",
+        "revive <name>: Tries to revive <name>. Command requires the `ban` privilege.",
         "hplist_cleanup: Clear empty entries to free up storage space.",
     }, "\n"),
     params = "(<name> +<num>) | (<name> -<num>) | (revive <name>) | hplist_cleanup",
-    privs = {server = true},
+    privs = {server = true, lifesteal_admin = true},
 })
 
 local colorize = core.colorize
@@ -44,16 +44,19 @@ cmd:sub(":target:username -:num:int", function(name, target, num)
     end
 end)
 
-cmd:sub("revive :target:username", function(name, target)
-    local player = core.get_player_by_name(name)
-    if not lifesteal_mod.isBanned(target) then
-        lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
-        return
-    end
-    if lifesteal_mod.revive(target) then
-        lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. target .. ".", "#05F53D")
-    end
-end)
+cmd:sub("revive :target:username", {
+    privs = {ban = true},
+    func = function(name, target)
+        local player = core.get_player_by_name(name)
+        if not lifesteal_mod.isBanned(target) then
+            lifesteal_mod.chatSendPlayer(player:get_player_name(), "Player is not real or is still alive.", "#FF0000")
+            return
+        end
+        if lifesteal_mod.revive(target) then
+            lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. target .. ".", "#05F53D")
+        end
+    end,
+})
 
 cmd:sub("hplist_cleanup", function(name)
     local cleared = lifesteal_mod.cleanHPList()

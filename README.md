@@ -46,9 +46,9 @@
 - `lifesteal_mod.HP_REVIVE -> int`
   - Amount of HP a revived player will be given.
 - `lifesteal_mod.HP_MAX -> int`
-  - The maximum amount of HP one player can have.
+  - Maximum amount of HP one player can have.
 - `lifesteal_mod.DEATH_MESSAGE_DEFAULT -> string`
-  - The message returned when someone is dead.
+  - Default message returned when someone is dead.
 - `lifesteal_mod.CURRENT_GAME -> string`
   - The current game running.
 - `lifesteal_mod.HUDBARS -> boolean`

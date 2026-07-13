@@ -1,11 +1,6 @@
 local HEART = "lifesteal_mod:heart"
 local colorize = core.colorize
 
-core.register_privilege("withdraw", {
-	description = "Grants the usage of the /withdraw command.",
-	give_to_singleplayer = true,
-})
-
 local cmd = chatcmdbuilder.register("withdraw", {
     params = "<num>",
     privs = {withdraw = true},

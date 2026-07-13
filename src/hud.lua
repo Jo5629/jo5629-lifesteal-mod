@@ -42,12 +42,8 @@ core.register_playerevent(function(player, eventname)
         local hp_max = player:get_properties().hp_max
         player:hud_change(id, "item", hp_max)
 
-        local offset = {}
-        if hp_max / 2 <= 10 then
-            offset = calculate_offset(10)
-        else
-            offset = calculate_offset(hp_max / 2)
-        end
+        local hearts = math.max(10, hp_max / 2)
+        local offset = calculate_offset(hearts)
 
         player:hud_change(id, "offset", offset)
     end

@@ -37,7 +37,7 @@ function lifesteal_mod.getHearts(pName)
 end
 
 function lifesteal_mod.setHearts(pName, num)
-    hpList[pName] = num
+    hpList[pName] = math.min(num, lifesteal_mod.HP_MAX)
     storage:set_string("lifesteal_mod:hpList", core.write_json(hpList))
 end
 
