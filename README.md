@@ -36,11 +36,6 @@
   - Updates `player`'s `hp_max` and updated the hud accordingly.
 - `lifesteal_mod.getHearts(pName)`
 - `lifesteal_mod.setHearts(pName, num)`
-- `lifesteal_mod.cleanHPList() -> int`
-  - Returns how many entries were cleared.
-  - Clears up entries that have a value of 0.
-    - The mod assumes that players with 0 HP are dead and banned.
-  - Used for freeing up storage space.
 - `lifesteal_mod.banPlayer(pName)`
 - `lifesteal_mod.unbanPlayer(pName)`
 - `lifesteal_mod.isBanned(pName) -> boolean`
@@ -63,6 +58,12 @@
   - `player`: PlayerRef
   - Checks to see if `player` has the `health_boost` effect.
   - The check only occurs when using VoxeLibre, all other games will always return `false`.
+- `lifesteal_mod.cleanHPList() -> int`
+  - Returns how many entries were cleared.
+  - Clears up entries that have a value of 0.
+    - The mod assumes that players with 0 HP are dead and banned.
+  - Used to free up storage space.
+- `lifesteal_mod.clamp(num, min, max)`
 
 ### Constants
 
@@ -80,6 +81,7 @@
   - Checks if `hudbars` is enabled.
 - `lifesteal_mod.VL_HUDBARS -> boolean`
   - Checks if `vl_hudbars` is enabled.
+- `lifesteal_mod.DAMAGE_ENABLED -> boolean`
 
 ## Miscellaneous
 

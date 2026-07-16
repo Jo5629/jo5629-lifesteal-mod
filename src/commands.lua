@@ -18,12 +18,7 @@ local function addHearts(target, num)
     end
 
     local newHP = lifesteal_mod.getHearts(target) + num * 2
-    if newHP > lifesteal_mod.HP_MAX then
-        newHP = lifesteal_mod.HP_MAX
-    end
-    if newHP < 2 then
-        newHP = 2
-    end
+    newHP = lifesteal_mod.clamp(newHP, 2, lifesteal_mod.HP_MAX)
 
     local targetObj = core.get_player_by_name(target)
     if targetObj then

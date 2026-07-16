@@ -1,17 +1,48 @@
 #   The max hearts a player is able to have.
-lifesteal_mod.max_hearts (Max hearts) int 20 1 100
-
-#   If enabled, the mod will show a error whenever using an unsupported game.
-lifesteal_mod.show_unsupported_error (Show unsupported game error) bool true
+lifesteal_mod.max_hearts (Max hearts) int 20 1
 
 #   Default message shown when a player loses all of their hearts.
 lifesteal_mod.death_message (Death message) string You ran out of hearts.
 
 #   Amount of hearts a new player will be given.
-lifesteal_mod.hearts_newplayer (Hearts for a new player) int 10 1 100
+lifesteal_mod.hearts_newplayer (Hearts for a new player) int 10 1
 
 #   Amount of hearts a player will be given after they are revived.
 #
-#   Recommended to be less than however many hearts are required
-#   in the lantern crafting recipe to avoid heart farming.
-lifesteal_mod.hearts_revive (Hearts on revive) int 3 1 100
+#   A good rule of thumb is that the number should be less than
+#   however many hearts are required in the lantern crafting
+#   recipe to avoid players exploiting the setting.
+lifesteal_mod.hearts_revive (Hearts on revive) int 3 1
+
+[Combat]
+
+#   After punching a player, the player will enter combat mode
+#   for however many seconds specified in the setting.
+#
+#   If the player dies while still in combat mode, whoever last 
+#   hit the player will receive the heart.
+lifesteal_mod.combat_timer (Combat timer) float 10.0 0.2
+
+#   If a player logs out while still in combat mode, the player
+#   will lose the heart and it will be given to whoever
+#   last hit the player.
+lifesteal_mod.enable_combat_logging (Enable combat logging) bool true
+
+#   If enabled, the player will be notified when they enter or 
+#   exit combat mode.
+lifesteal_mod.notify_combat_mode (Notify when in combat mode) bool true
+
+[Error Handling]
+
+#   If enabled, the mod will show a error whenever using an unsupported game.
+lifesteal_mod.show_unsupported_error (Show unsupported game error) bool true
+
+#   If `enable_damage` is disabled, the mod will disable:
+#   - Using hearts and revive lanterns
+#   - The ban list
+#   - Losing and obtaining hearts
+#   - The /withdraw command
+#   - The /ls command
+#
+#   If the setting is enabled, the mod will log this change.
+lifesteal_mod.log_functionality_warning (Log disabled functionality) bool true

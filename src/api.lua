@@ -22,6 +22,7 @@ function lifesteal_mod.update(player, hpMax)
         end
     end
 
+    hpMax = lifesteal_mod.clamp(hpMax, 0, lifesteal_mod.HP_MAX)
     lifesteal_mod.setHearts(name, hpMax)
     player:set_properties({hp_max = hpMax})
 
@@ -37,20 +38,8 @@ function lifesteal_mod.getHearts(pName)
 end
 
 function lifesteal_mod.setHearts(pName, num)
-    hpList[pName] = math.min(num, lifesteal_mod.HP_MAX)
+    hpList[pName] = num --lifesteal_mod.clamp(num, 0, lifesteal_mod.HP_MAX)
     storage:set_string("lifesteal_mod:hpList", core.write_json(hpList))
-end
-
-function lifesteal_mod.cleanHPList()
-    local cleared = 0
-    for pName, num in pairs(hpList) do
-        if num == 0 then
-            hpList[pName] = nil
-            cleared = cleared + 1
-        end
-    end
-    storage:set_string("lifesteal_mod:hpList", core.write_json(hpList))
-    return cleared
 end
 
 function lifesteal_mod.banPlayer(pName)
@@ -100,4 +89,20 @@ function lifesteal_mod.hasHealthBoost(player)
         return mcl_potions.has_effect(player, "health_boost")
     end
     return false
+end
+
+function lifesteal_mod.cleanHPList()
+    local cleared = 0
+    for pName, num in pairs(hpList) do
+        if num == 0 then
+            hpList[pName] = nil
+            cleared = cleared + 1
+        end
+    end
+    storage:set_string("lifesteal_mod:hpList", core.write_json(hpList))
+    return cleared
+end
+
+function lifesteal_mod.clamp(num, min, max)
+    return math.max(min, math.min(num, max))
 end

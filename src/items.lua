@@ -2,6 +2,10 @@ core.register_craftitem("lifesteal_mod:heart", {
 	description = "Heart",
 	inventory_image = "heart.png",
 	on_use = function(itemstack, user, pointed_thing)
+        if not lifesteal_mod.DAMAGE_ENABLED then
+            return
+        end
+
         if lifesteal_mod.hasHealthBoost(user) then
             lifesteal_mod.chatSendPlayer(user:get_player_name(), "Wait before the Health Boost effect clears to use the heart.", "#FF0000")
             return
@@ -25,11 +29,14 @@ core.register_craftitem("lifesteal_mod:fragment", {
 	inventory_image = "lifesteal_mod_fragment.png",
 })
 
+local lanternFormspec
 core.register_tool("lifesteal_mod:revive_lantern", {
     description = "Revive Lantern.",
     inventory_image = "lifesteal_mod_revive_lantern.png",
     on_use = function(itemstack, user, pointed_thing)
-        lifesteal_mod.lantern:show(user)
+        if lifesteal_mod.DAMAGE_ENABLED then
+            lanternFormspec:show(user)
+        end
     end,
 })
 
@@ -42,7 +49,7 @@ local function revivePlayer(player, ctx)
         return
     end
 
-    lifesteal_mod.lantern:close(player)
+    lanternFormspec:close(player)
     if lifesteal_mod.revive(reviveName) then
         lifesteal_mod.chatSendPlayer(player:get_player_name(), "Revived " .. reviveName .. ".", "#05F53D")
         inv:remove_item("main", "lifesteal_mod:revive_lantern")
@@ -50,7 +57,7 @@ local function revivePlayer(player, ctx)
 end
 
 local gui = flow.widgets
-lifesteal_mod.lantern = flow.make_gui(function(player, ctx)
+lanternFormspec = flow.make_gui(function(player, ctx)
     return gui.Vbox{
         gui.Field{
             name = "playerName",
