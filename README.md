@@ -21,6 +21,10 @@
 - When a player goes to zero hearts, the player is banned from the server.
 - You can withdraw hearts using the  `/withdraw [<hearts>]` command.
   - The command requires the `withdraw` privilege.
+- Combat Mode
+  - If Player A punches Player B, Player B will enter combat mode.
+  - If Player B dies and is in combat mode, Player A will receive the heart.
+  - If combat logging is enabled, Player B leaves the game, and Player B is in combat mode, Player B will lose the heart and Player A will receive it.
 - You can bring a banned player back through using a revive lantern.
 - Depending on the game, hearts and revive lanterns are craftable.
 - **Some functionality will be disabled if `enable_damage` is disabled or not found.**
@@ -73,6 +77,9 @@
   - Amount of HP a revived player will be given.
 - `lifesteal_mod.HP_MAX -> int`
   - Maximum amount of HP one player can have.
+- `lifesteal_mod.COMBAT_TIMER -> float`
+- `lifesteal_mod.ENABLE_COMBAT_LOGGING -> bool`
+- `lifesteal_mod.NOTIFY_COMBAT_MODE -> bool`
 - `lifesteal_mod.DEATH_MESSAGE_DEFAULT -> string`
   - Default message returned when someone is dead.
 - `lifesteal_mod.CURRENT_GAME -> string`
@@ -82,6 +89,8 @@
 - `lifesteal_mod.VL_HUDBARS -> boolean`
   - Checks if `vl_hudbars` is enabled.
 - `lifesteal_mod.DAMAGE_ENABLED -> boolean`
+- `lifesteal_mod.PREFIX -> string`
+  - Mainly used for messages for the player and `debug.txt`.
 
 ## Miscellaneous
 

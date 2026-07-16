@@ -10,18 +10,22 @@ local function get(name, default)
     return core.settings:get(name) or default
 end
 
+local function getBool(name, default)
+    return core.settings:get_bool(name, default)
+end
+
 lifesteal_mod = {
     HP_NEWPLAYER = get("lifesteal_mod.hearts_newplayer", 10) * 2,
     HP_REVIVE = get("lifesteal_mod.hearts_revive", 3) * 2,
     HP_MAX = get("lifesteal_mod.max_hearts", 20) * 2,
     COMBAT_TIMER = get("lifesteal_mod.combat_timer", 10),
-    ENABLE_COMBAT_LOGGING = get("lifesteal_mod.enable_combat_logging", true),
-    NOTIFY_COMBAT_MODE = get("lifesteal_mod.notify_combat_mode", true),
+    ENABLE_COMBAT_LOGGING = getBool("lifesteal_mod.enable_combat_logging", true),
+    NOTIFY_COMBAT_MODE = getBool("lifesteal_mod.notify_combat_mode", true),
     DEATH_MESSAGE_DEFAULT = get("lifesteal_mod.death_message", "You ran out of hearts."),
     CURRENT_GAME = worldMT:get("gameid"),
     HUDBARS = getMP("hudbars") ~= nil,
     VL_HUDBARS = getMP("vl_hudbars") ~= nil,
-    DAMAGE_ENABLED = core.settings:get_bool("enable_damage", false),
+    DAMAGE_ENABLED = getBool("enable_damage", false),
     PREFIX = "[lifesteal_mod]"
 }
 
